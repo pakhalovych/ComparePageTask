@@ -1,0 +1,91 @@
+<template>
+
+<template lwc:if={isProductToCompare}>
+    <div class="place-table-custom-compare-page">
+        <div class="topBlock">
+            Compare products list
+        </div>
+        
+        <div class="scrollTableWrap">
+            <div class="selectedProduct">
+                <img src={bestOptionImages.right} alt="" class="rightGood">
+                <img src={bestOptionImages.left} alt="" class="leftGood">
+            </div>
+        <table id="mainTable" class="mainTable" onmousemove={getUserFocus} onmouseleave={deactivateTableListening}>
+            <tbody>
+                <tr class="topImageRow">
+                    <td class="actionBtn propTableType"></td>
+                    <template for:each={compareProductList} for:item="product">
+                        <td key={product.id} class="colSizeCompare" data-product={product.id}><img src={product.image.url} alt={product.image.alt} class="productImage"></td>
+                    </template>
+                </tr>
+    
+                <tr>
+                    <td class="propTableType" >Name</td>
+                    <template for:each={compareProductList} for:item="product">
+                        <td key={product.id} class="colSizeCompare" data-product={product.id}>{product.fields.Name}</td>
+                    </template>
+                </tr>
+
+                <tr>
+                    <td class="propTableType" >Description</td>
+                    <template for:each={compareProductList} for:item="product">
+                        <td key={product.id} class="colSizeCompare descText" data-product={product.id}>{product.fields.Description}</td>
+                    </template>
+                </tr>
+
+                <tr>
+                    <td class="propTableType" >Family</td>
+                    <template for:each={compareProductList} for:item="product">
+                        <td key={product.id} class="colSizeCompare" data-product={product.id}>{product.fields.Family}</td>
+                    </template>
+                </tr>
+
+                <tr>
+                    <td class="propTableType">SKU</td>
+                    <template for:each={compareProductList} for:item="product">
+                        <td key={product.id} class="colSizeCompare" data-product={product.id}>{product.fields.StockKeepingUnit}</td>
+                    </template>
+                </tr>
+
+                <tr>
+                    <td class="propTableType" data-best-option={bestPriceId} onmouseenter={bestOption} onmouseleave={bestOption}>Price</td>
+                    <template for:each={compareProductList} for:item="product">
+                        <td key={product.id} class="colSizeCompare" data-product={product.id}>{product.prices.unit}</td>
+                    </template>
+                </tr>
+     
+                <tr class="actionBtn">
+                    <td class="propTableType"></td>
+                    <template for:each={compareProductList} for:item="product">
+                        <td key={product.id} class="colSizeCompare" data-product={product.id}>
+                            <div  class="addToCartCustom" data-product-add={product.id} onmouseleave={resetButtonsMove} onclick={addToCartFromCompare}>
+                                Add to cart
+                            </div>
+                        </td>
+                    </template>
+                    
+                </tr>
+                <tr class="actionBtn ">
+                    <td class="propTableType"></td>
+                    <template for:each={compareProductList} for:item="product">
+                        <td key={product.id} class="colSizeCompare" data-product={product.id}>
+                            <div data-product-remove={product.id} class="removeFromCompare" onclick={removeProductAnim} >
+                                Remome from compare list
+                            </div>
+                        </td>
+                    </template>
+                </tr>
+            </tbody>
+            
+        </table>
+    </div>
+    </div>
+</template>
+
+<template lwc:else>
+No product
+</template>
+
+   
+</template>

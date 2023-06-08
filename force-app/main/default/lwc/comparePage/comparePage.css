@@ -1,0 +1,159 @@
+.place-table-custom-compare-page .mainTable {
+    /* border-collapse: collapse; */
+    position: relative;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    width: auto;
+    border-spacing: 2px;
+    border-collapse: separate;
+    padding-bottom: 50px;
+}
+
+.place-table-custom-compare-page td,
+.place-table-custom-compare-page th {
+    padding: 15px;
+    /* border: 1px solid black; */
+    font-size: 1rem;
+    text-align: center;
+    border-radius: 5px;
+    min-width: 250px;
+    transition: .5s ease;
+}
+.place-table-custom-compare-page .colSizeCompare{
+    max-width: 300px;
+}
+
+.place-table-custom-compare-page tr{
+    background-color: rgb(248, 248, 248);
+}
+
+.place-table-custom-compare-page tr.actionBtn, 
+.place-table-custom-compare-page tr.actionBtn:hover,
+.place-table-custom-compare-page .topImageRow,
+.place-table-custom-compare-page .topImageRow:hover{
+    background-color: transparent;
+} 
+
+.place-table-custom-compare-page tr:hover {
+    background-color: rgb(215 249 230);
+}
+
+.place-table-custom-compare-page .place-table > *{
+    box-sizing: border-box;
+}
+.place-table-custom-compare-page {
+    display: grid;
+    place-items: center;
+    border: none;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: inset 3px 3px 7px rgb(179, 179, 179);
+    width: 100%;
+    max-width: 1600px;
+}
+.place-table-custom-compare-page:focus{
+outline: none;
+}
+.place-table-custom-compare-page .addToCartCustom{
+    background-color: rgb(255, 255, 255);
+    padding: 15px;
+    color: green;
+    border: 1px solid green;
+    border-radius: 15px;
+    box-shadow: 3px 3px 7px rgb(179, 179, 179);
+    cursor: pointer;
+    user-select: none;
+    font-size: 1rem;
+    transition:  transform 1s cubic-bezier(.48,-0.45,.11,.93);
+    box-sizing: border-box;
+    /* max-width: 200px; */
+}
+
+.place-table-custom-compare-page .descText{
+    font-size: 0.8rem;
+}
+.place-table-custom-compare-page .addToCartCustom:hover{
+    background-color: green;
+    color: white;
+    border: 1px solid transparent;
+}
+.place-table-custom-compare-page .removeFromCompare{
+    background-color: rgb(255, 255, 255);
+    padding: 10px;
+    color: rgb(124, 1, 1);
+    border: 1px solid rgb(255, 167, 167);
+    border-radius: 15px;
+    box-shadow: 3px 3px 7px rgb(179, 179, 179);
+    cursor: pointer;
+    user-select: none;
+    font-size: 0.8rem;
+    transition:  transform .8s ease;
+    box-sizing: border-box;
+    z-index: 20;
+}
+.place-table-custom-compare-page .propTableType{
+    background-color: rgba(255, 255, 255, 0.812);
+    font-size: 1.2rem;
+    position: sticky;
+    left: 0;
+    user-select: none;
+    backdrop-filter: blur(4px);
+    z-index: 5;
+}
+
+.place-table-custom-compare-page .topBlock{
+    font-size: 2rem;
+    margin: 20px 0;
+}
+.place-table-custom-compare-page .scrollTableWrap{
+    width: 100%;
+    overflow: auto;
+    height: 100%;
+    position: relative;
+}
+.place-table-custom-compare-page .selectedProduct{
+    display: grid;
+    place-items: center;
+    position: absolute;
+    border: 6px solid green;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    z-index: 5;
+    border-radius: 15px;
+    pointer-events: none;
+    opacity: 0;
+    overflow: hidden;
+    background: linear-gradient(to top, rgba(0, 128, 0, 0.137),rgba(255, 255, 255, 0.212));
+    /* transition: opacity .5s ease; */
+}
+.place-table-custom-compare-page .rightGood,.leftGood{
+    max-height: 90%;
+    position: absolute;
+    right: 0;
+    width: 30%;
+    max-width: 100px;
+    filter: drop-shadow(2px 2px 4px rgb(151, 151, 151)) ;
+    transition: .5s ease;
+    /* animation: movingWave 2s linear alternate-reverse infinite; */
+}
+.place-table-custom-compare-page .leftGood{
+    left: 0;
+    transform: translate(-100%);
+}
+
+.place-table-custom-compare-page .rightGood{
+    right: 0;
+    transform: translate(100%);
+}
+
+.place-table-custom-compare-page .productImage{
+    width: 100%;
+    max-width: 200px;
+    transition: transform 1s cubic-bezier(.48,-0.45,.11,.93), opacity .8s ease;
+}
+
+@keyframes movingWave {
+    to{transform: translateY(5px);}
+}

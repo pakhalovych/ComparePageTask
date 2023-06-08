@@ -1,0 +1,24 @@
+
+<template>
+   <template if:false={isProductInCompareList}>
+      <lightning-button
+         onclick={sendToCompare}
+         variant="border-filled"
+         label="Add to compare"
+         title="Add to compare"
+         icon-name="utility:new"
+         class="slds-p-around_xxx-small">
+      </lightning-button>
+   </template>
+
+   <template if:true={isProductInCompareList}>
+      <lightning-button
+         onclick={navigateToComparePage}
+         variant="border-filled"
+         label="Visit compare page"
+         icon-name="utility:task"
+         class="slds-p-around_xxx-small">
+      </lightning-button>
+   </template>
+   
+</template>
