@@ -12,9 +12,7 @@ const getCompareList = () => {
 
     if(localInfo){
         try {
-        console.log('my test1',compareObject)
          compareObject = JSON.parse(localInfo);
-         console.log('my test2',compareObject)
         } catch (e) {
             localStorage.removeItem( getConstants().rootCompare )
             compareObject = {};
@@ -28,7 +26,6 @@ const getCompareList = () => {
 const checkProductCompareList = (productId) => {
 
     let compareList = getCompareList();
-    console.log(productId, compareList )
     return compareList.hasOwnProperty(productId);
 }
 
@@ -51,9 +48,6 @@ const addProductToCompareList = (productId , productData) => {
     localStorage.setItem( getConstants().rootCompare , JSON.stringify(compareList) )
     return compareList;
 }
-
-
-
 
 
 export { getConstants, getCompareList, checkProductCompareList, removeFromCompareList , addProductToCompareList};
