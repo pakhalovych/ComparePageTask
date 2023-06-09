@@ -1,0 +1,15 @@
+<template>
+    <template lwc:if={isPriceDiff}>
+        <div class="priceBlock" data-pay="0" data-get="0">
+            <p>
+              <span class="listPriceBlock">€{listPrice}</span> <span class="unitPriceBlock">€{unitPrice}</span>
+            </p>
+          </div>
+    </template>
+    <template lwc:else>
+        <p>
+            <span class="unitPriceBlock">€{unitPrice}</span>
+          </p>
+    </template>
+
+</template>

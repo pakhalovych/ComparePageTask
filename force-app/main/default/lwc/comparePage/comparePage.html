@@ -1,5 +1,9 @@
 <template>
 
+  <template lwc:if={notificationExist}>
+    <c-custom-notification notification-info={notificationInfoFromCompare}></c-custom-notification>
+  </template>
+ 
   
     <div class="place-table-custom-compare-page">
       <div class="topBlock">Compare products list</div>
@@ -107,7 +111,8 @@
                   class="colSizeCompare"
                   data-product={product.id}
                 >
-                  {product.prices.unit}
+                <c-prices-compare-block unit-price={product.prices.unit} list-price={product.prices.listPrice}></c-prices-compare-block>
+                  
                 </td>
               </template>
             </tr>

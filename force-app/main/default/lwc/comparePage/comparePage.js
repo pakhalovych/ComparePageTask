@@ -25,6 +25,9 @@ export default class ComparePage extends NavigationMixin(LightningElement) {
     lastCord: { x: 0, y: 0 },
     currCord: { x: 0, y: 0 }
   };
+  notificationInfoFromCompare = {}
+
+
 
   @wire(getProducts, {
     webstoreId: "$webstoreId",
@@ -62,16 +65,21 @@ export default class ComparePage extends NavigationMixin(LightningElement) {
     this.productIds = this.loadCompareList();
   }
 
-  getBestPriceId(){
-    let productId = '';
+
+get notificationExist(){
+ return Object.keys(this.notificationInfoFromCompare).length > 0;
+}
+
+  getBestPriceId() {
+    let productId = "";
     let lastPrice = 0;
-    if(this.compareProductList.length > 0){
-       this.compareProductList.forEach((product,idx)=>{
-        if(product.prices.unit<lastPrice || idx === 0){
+    if (this.compareProductList.length > 0) {
+      this.compareProductList.forEach((product, idx) => {
+        if (product.prices.unit < lastPrice || idx === 0) {
           productId = product.id;
-          lastPrice = product.prices.unit
+          lastPrice = product.prices.unit;
         }
-      })
+      });
     }
     return productId;
   }
@@ -162,6 +170,7 @@ export default class ComparePage extends NavigationMixin(LightningElement) {
               };
               productImageToCreate.style.cssText =
                 "opacity:0;transition:opacity 0.2s ;";
+              // eslint-disable-next-line @lwc/lwc/no-async-operation
               setTimeout(() => {
                 insertedImg.style.transform =
                   " translate(" +
@@ -186,20 +195,19 @@ export default class ComparePage extends NavigationMixin(LightningElement) {
             this.cursorInTable = false;
             this.resetButtonsMove();
           };
+          this.notificationInfoFromCompare = {type : 'success',text : 'Product was added to cart'}
         });
     }
   }
 
-
-
   setNewproductList(productId) {
-    this.compareProductList.forEach((product,idx) => {
-      if(product.id === productId){
+    this.compareProductList.forEach((product, idx) => {
+      if (product.id === productId) {
         this.compareProductList.splice(idx, 1);
         // eslint-disable-next-line no-useless-return
         return;
       }
-    })
+    });
 
     this.bestPriceId = this.getBestPriceId();
     removeFromCompareList(productId);
@@ -234,9 +242,11 @@ export default class ComparePage extends NavigationMixin(LightningElement) {
 
   bestOption(e) {
     let element = e.target;
+    let elementBox = element.getBoundingClientRect();
     let show = e.type === "mouseenter" ? true : false;
     let option = element.dataset.bestOption;
     let moveFrame = this.template.querySelector(".selectedProduct");
+    let scrollTable = this.template.querySelector(".scrollTableWrap");
     let bestOptionBlock = this.template.querySelector(
       '[data-product="' + option + '"]'
     );
@@ -244,11 +254,16 @@ export default class ComparePage extends NavigationMixin(LightningElement) {
     let leftHandsImage = this.template.querySelector(".leftGood");
 
     if (bestOptionBlock) {
-      let bestOption = this.template
-        .querySelector('[data-product="' + option + '"]')
+      let bestOption = bestOptionBlock
         .getBoundingClientRect();
 
       if (show) {
+
+        if(scrollTable.getBoundingClientRect().x < scrollTable.scrollWidth){
+          bestOptionBlock.scrollIntoView({ behavior: "smooth",block: "nearest", inline: "center" })
+          
+        }
+
         moveFrame.style.cssText =
           "width:" +
           bestOption.width +
@@ -275,6 +290,7 @@ export default class ComparePage extends NavigationMixin(LightningElement) {
   }
 
   intervalMouseCheck() {
+    // eslint-disable-next-line @lwc/lwc/no-async-operation
     let checkInterval = setInterval(() => {
       if (
         this.tableMouse.lastCord.x === this.tableMouse.currCord.x &&
@@ -317,15 +333,15 @@ export default class ComparePage extends NavigationMixin(LightningElement) {
     this.cursorInTable = true;
   }
 
-  navigateToProduct(e){
-      this[NavigationMixin.Navigate]({
-          type: 'standard__recordPage',
-          attributes: {
-              recordId: e.target.dataset.product,
-              objectApiName: 'Product2',
-              actionName: 'view'
-          },
-      });
+  navigateToProduct(e) {
+    this[NavigationMixin.Navigate]({
+      type: "standard__recordPage",
+      attributes: {
+        recordId: e.target.dataset.product,
+        objectApiName: "Product2",
+        actionName: "view"
+      }
+    });
   }
 
   deactivateTableListening() {

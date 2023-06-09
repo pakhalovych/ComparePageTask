@@ -1,0 +1,48 @@
+.wrapNotificationCustom{
+    position: fixed;
+    width: 100vw;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+    padding: 50px 0;
+    transform: translateY(-100%);
+    animation: notificationAnim 5s forwards cubic-bezier(.37,-0.56,0,1.05);
+    opacity: 0;
+  }
+  .notificationCustomComponent{
+    width: 90%;
+    max-width: 400px;
+    padding: 15px;
+    box-sizing: border-box;
+    box-shadow: rgb(175, 175, 175) 3px 3px 7px;
+    border-radius: 15px;
+    text-align: center;
+    background-color: white;
+    margin: auto;
+
+  }
+
+  @keyframes notificationAnim {
+    0%{transform: translateY(-100%);opacity: 0;}
+    10%{transform: translateY(0%);opacity: 1;}
+    90%{transform: translateY(0%);opacity: 1;}
+    100%{transform: translateY(-100%);opacity: 0;}
+  }
+
+  .errorBorder{
+    border: 1px solid red;
+    background-color: rgb(255, 240, 240);
+  }
+
+  .successBorder{
+    border: 1px solid green;
+    background-color: rgb(223, 250, 223);
+  }
+
+  .noticeBorder{
+    border: 1px solid yellow;
+    background-color: rgb(255, 255, 226);
+  }

@@ -1,0 +1,43 @@
+.listPriceBlock {
+    font-size: 0.9rem;
+    text-decoration: line-through red;
+    color: gray;
+  }
+
+  .priceBlock::before {
+    content: "Get " attr(data-get) " pay only for " attr(data-pay) "  !";
+    width: 100%;
+    height: auto;
+    bottom: 100%;
+    background-color: rgb(9, 95, 9);
+      position: absolute;
+    overflow: hidden;
+    padding: 5px;
+    left: 0;
+    color: white;
+    font-size: 0.6rem;
+    box-sizing: border-box;
+    transition: 0.2s ease;
+    opacity: 0;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+    border-radius: 8px 8px;
+  }
+  .priceBlock {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .priceBlock:hover::before {
+    opacity: 1;
+  }
+  .unitPriceBlock {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 0 5px;
+  }
