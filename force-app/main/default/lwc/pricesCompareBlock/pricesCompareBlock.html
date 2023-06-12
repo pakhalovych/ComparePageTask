@@ -2,13 +2,13 @@
     <template lwc:if={isPriceDiff}>
         <div class="priceBlock" data-pay="0" data-get="0">
             <p>
-              <span class="listPriceBlock">€{listPrice}</span> <span class="unitPriceBlock">€{unitPrice}</span>
+              <span class="listPriceBlock">{loadListPrice}</span> <span class="unitPriceBlock">{loadUnitPrice}</span>
             </p>
           </div>
     </template>
     <template lwc:else>
         <p>
-            <span class="unitPriceBlock">€{unitPrice}</span>
+            <span class="unitPriceBlock">{loadUnitPrice}</span>
           </p>
     </template>
 

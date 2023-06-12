@@ -1,46 +1,53 @@
-import { LightningElement, api } from 'lwc';
+import { LightningElement, api } from "lwc";
 
 export default class PricesCompareBlock extends LightningElement {
+  @api
+  unitPrice = 0;
 
-@api
-unitPrice = 0;
+  @api
+  listPrice = 0;
 
-@api
-listPrice = 0;
+  defaultCurrency = "€";
 
-payForNumber;
-getNumber;
+  // get unit price
+  get loadUnitPrice() {
+    return this.defaultCurrency + this.unitPrice;
+  }
 
-defaultCurrency = '€';
+  // get list price
+  get loadListPrice() {
+    return this.defaultCurrency + this.listPrice;
+  }
 
-get isPriceDiff(){
+  // check if price are different
+  get isPriceDiff() {
     return Number(this.listPrice) !== Number(this.unitPrice);
-}
+  }
 
-
-renderedCallback(){
+  renderedCallback() {
     this.countPrisingDiff();
-}
+  }
 
-countPrisingDiff(){
+  // set additional product price calculation
+  countPrisingDiff() {
+    if (!this.isPriceDiff) {
+      return;
+    }
     let payNumber = 1;
     let unit = Number(this.unitPrice);
     let list = Number(this.listPrice);
 
-    if(this.isPriceDiff && unit > 0 && list > 0){
-        console.log(unit, list, 'first',payNumber*list ,  payNumber*unit + unit)
-        while((payNumber*list) < (payNumber*unit + unit)){
-            payNumber++;
-            if(payNumber > 50){
-                break;
-            }
+    if (unit > 0 && list > 0) {
+      while (payNumber * list < payNumber * unit + unit) {
+        payNumber++;
+        if (payNumber > 50) {
+          break;
         }
+      }
     }
 
-    let priceBox = this.template.querySelector('.priceBlock');
-    priceBox.setAttribute('data-get',Math.floor((payNumber*list)/unit));
-    priceBox.setAttribute('data-pay',payNumber);
-}
-
-
+    let priceBox = this.template.querySelector(".priceBlock");
+    priceBox.setAttribute("data-get", Math.floor((payNumber * list) / unit));
+    priceBox.setAttribute("data-pay", payNumber);
+  }
 }

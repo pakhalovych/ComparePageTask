@@ -1,20 +1,20 @@
 <template>
 
-  <template lwc:if={notificationExist}>
-    <c-custom-notification notification-info={notificationInfoFromCompare}></c-custom-notification>
-  </template>
- 
-  
-    <div class="place-table-custom-compare-page">
-      <div class="topBlock">Compare products list</div>
+  <div class="place-table-custom-compare-page">
+    <div class="topBlock">Compare products list</div>
 
-      <template lwc:if={loadingProductsToCompare}>
-        Loading
-        </template>
+    <template lwc:if={loadingProductsToCompare}>
 
-        <template lwc:elseif={isProductToCompare}>
+      <div class="loadingWrap">
+        <lightning-spinner
+          alternative-text="Loading"
+          size="large"
+        ></lightning-spinner>
+      </div>
+    </template>
 
-      <div class="scrollTableWrap">
+    <template lwc:elseif={isProductToCompare}>
+      <div class="scrollTableWrap" >
         <div class="selectedProduct">
           <img src={bestOptionImages.right} alt="" class="rightGood" />
           <img src={bestOptionImages.left} alt="" class="leftGood" />
@@ -111,8 +111,10 @@
                   class="colSizeCompare"
                   data-product={product.id}
                 >
-                <c-prices-compare-block unit-price={product.prices.unit} list-price={product.prices.listPrice}></c-prices-compare-block>
-                  
+                  <c-prices-compare-block
+                    unit-price={product.prices.unit}
+                    list-price={product.prices.listPrice}
+                  ></c-prices-compare-block>
                 </td>
               </template>
             </tr>
@@ -128,7 +130,7 @@
                   <div
                     class="addToCartCustom"
                     data-product-add={product.id}
-                    data-processing=false
+                    data-processing="false"
                     onmouseleave={resetButtonsMove}
                     onclick={addToCartFromCompare}
                   >
@@ -150,7 +152,7 @@
                     class="removeFromCompare"
                     onclick={removeProductAnim}
                   >
-                    Remome from compare list
+                    Remove from compare list
                   </div>
                 </td>
               </template>
@@ -160,8 +162,5 @@
       </div>
     </template>
     <template lwc:else> No products to compare </template>
-    </div>
-
-
-
+  </div>
 </template>

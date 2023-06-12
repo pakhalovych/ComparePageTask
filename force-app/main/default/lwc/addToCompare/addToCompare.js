@@ -38,10 +38,9 @@ export default class AddToCompare extends NavigationMixin(LightningElement) {
     }
   }
 
+  // set expired time
   getTimeExpired() {
-    let hoursExipired = 0;
     let today = new Date();
-    today.setHours(today.getHours() + hoursExipired);
     return Math.floor(today.getTime() / 1000);
   }
 
@@ -50,6 +49,7 @@ export default class AddToCompare extends NavigationMixin(LightningElement) {
     this.prepareObjectTocompare.createdAt = this.getTimeExpired();
   }
 
+  // navigation to compare page
   navigateToComparePage() {
     this[NavigationMixin.Navigate]({
       type: "comm__namedPage",
@@ -59,6 +59,7 @@ export default class AddToCompare extends NavigationMixin(LightningElement) {
     });
   }
 
+  // check product Id and add to compare list
   sendToCompare() {
     if (this.prepareObjectTocompare.data) {
       addProductToCompareList(this.recordId, this.prepareObjectTocompare);

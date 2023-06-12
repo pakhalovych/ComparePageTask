@@ -62,7 +62,7 @@ outline: none;
     box-shadow: 3px 3px 7px rgb(179, 179, 179);
     cursor: pointer;
     user-select: none;
-    font-size: 1rem;
+    font-size: 0.8rem;
     transition:  transform 1s cubic-bezier(.48,-0.45,.11,.93);
     box-sizing: border-box;
 }
@@ -84,7 +84,7 @@ outline: none;
     box-shadow: 3px 3px 7px rgb(179, 179, 179);
     cursor: pointer;
     user-select: none;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     transition:  transform .8s ease;
     box-sizing: border-box;
     z-index: 20;
@@ -146,7 +146,7 @@ outline: none;
 
 .place-table-custom-compare-page .productImage{
     width: 100%;
-    max-width: 200px;
+    max-width: 150px;
     transition: transform 1s cubic-bezier(.48,-0.45,.11,.93), opacity .8s ease;
 }
 
@@ -187,4 +187,15 @@ outline: none;
 .place-table-custom-compare-page .cursorNavigation:hover::before{
     max-height: 40px;
     opacity: 1;
+}
+
+.place-table-custom-compare-page .loadingWrap{
+min-height: 150px;
+display: grid;
+place-items: center;
+position: relative;
+}
+
+.place-table-custom-compare-page .infoBoxAdd{
+    font-size: .8rem;
 }

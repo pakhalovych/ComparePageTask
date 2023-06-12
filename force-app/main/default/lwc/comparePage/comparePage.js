@@ -9,7 +9,6 @@ import { addItemToCart } from "commerce/cartApi";
 export default class ComparePage extends NavigationMixin(LightningElement) {
   webstoreId;
   effectiveAccountId;
-  list = [1, 2, 3, 4];
   bestOptionImages = {
     left: compareImage + "/images/leftGood.png",
     right: compareImage + "/images/rightGood.png"
@@ -18,16 +17,12 @@ export default class ComparePage extends NavigationMixin(LightningElement) {
   compareProductList = [];
   cursorInTable = false;
   productIds;
-  fieldsToCompare = ["Name", "Description", "Family"];
   checkInterval;
   loadingProductsToCompare = true;
   tableMouse = {
     lastCord: { x: 0, y: 0 },
     currCord: { x: 0, y: 0 }
   };
-  notificationInfoFromCompare = {}
-
-
 
   @wire(getProducts, {
     webstoreId: "$webstoreId",
@@ -42,7 +37,9 @@ export default class ComparePage extends NavigationMixin(LightningElement) {
       console.log(error);
     }
 
-    this.loadingProductsToCompare = false;
+    if (data || error) {
+      this.loadingProductsToCompare = false;
+    }
   }
 
   connectedCallback() {
@@ -65,11 +62,7 @@ export default class ComparePage extends NavigationMixin(LightningElement) {
     this.productIds = this.loadCompareList();
   }
 
-
-get notificationExist(){
- return Object.keys(this.notificationInfoFromCompare).length > 0;
-}
-
+  // get prodduct best price Id
   getBestPriceId() {
     let productId = "";
     let lastPrice = 0;
@@ -84,10 +77,12 @@ get notificationExist(){
     return productId;
   }
 
+  // check if product to compare list contain at least 1 item
   get isProductToCompare() {
     return this.compareProductList.length > 0;
   }
 
+  // create array of product data object
   createTableInfo(data) {
     let tableInfo = [];
 
@@ -117,9 +112,9 @@ get notificationExist(){
     return tableInfo;
   }
 
+  // get a list of products Id to load data
   loadCompareList() {
     let productList = getCompareList();
-
     let ids = Object.keys(productList);
 
     if (ids.length > 0) {
@@ -129,11 +124,12 @@ get notificationExist(){
     return {};
   }
 
+  // handler for add to cart click event
   addToCartFromCompare(e) {
     let element = e.target;
     let cartBox = document.querySelector("commerce_cart-badge");
-    console.log(element.dataset.processing);
     let textButton = element.innerText;
+    let infoText = "Product was added to cart!";
 
     if (element.dataset.processing == "false") {
       element.innerText = "Processing ... ";
@@ -142,7 +138,7 @@ get notificationExist(){
 
       addItemToCart(element.dataset.productAdd, 1)
         .then((response) => {
-          console.log(response);
+
           if (cartBox) {
             let cordCartBox = cartBox.getBoundingClientRect();
             let productImageToCreate = this.template.querySelector(
@@ -185,21 +181,28 @@ get notificationExist(){
         })
         .catch((error) => {
           console.log(error);
+          infoText = "Error!";
         })
         .finally(() => {
           element.style.animationIterationCount = 1;
           element.onanimationend = () => {
             element.classList.remove("processingCart");
-            element.innerHTML = textButton;
-            element.setAttribute("data-processing", false);
-            this.cursorInTable = false;
-            this.resetButtonsMove();
+            element.innerHTML = infoText;
+            element.classList.add("infoBoxAdd");
+
+            setTimeout(() => {
+              element.classList.remove("infoBoxAdd");
+              element.innerHTML = textButton;
+              element.setAttribute("data-processing", false);
+              this.cursorInTable = false;
+              this.resetButtonsMove();
+            }, 1000);
           };
-          this.notificationInfoFromCompare = {type : 'success',text : 'Product was added to cart'}
         });
     }
   }
 
+  // triggering rerendering of compare list table by remove product data
   setNewproductList(productId) {
     this.compareProductList.forEach((product, idx) => {
       if (product.id === productId) {
@@ -211,9 +214,9 @@ get notificationExist(){
 
     this.bestPriceId = this.getBestPriceId();
     removeFromCompareList(productId);
-    console.log("render new table");
   }
 
+  // remove from compare list functionality , click event handler
   removeProductAnim(e) {
     let element = e.target;
     let columnToRemove = this.template.querySelectorAll(
@@ -229,8 +232,8 @@ get notificationExist(){
       td.style.cssText = "width:0;min-width:0;padding:0;";
       td.innerHTML = "";
 
-      td.ontransitionend = (e) => {
-        if (e.propertyName === "min-width") {
+      td.ontransitionend = (event) => {
+        if (event.propertyName === "min-width") {
           // td.remove();
           if (idx === columnToRemove.length - 1) {
             this.setNewproductList(element.dataset.productRemove);
@@ -240,9 +243,9 @@ get notificationExist(){
     });
   }
 
+  // handler for price best option functionality , mouseenter and mouseleave handler
   bestOption(e) {
     let element = e.target;
-    let elementBox = element.getBoundingClientRect();
     let show = e.type === "mouseenter" ? true : false;
     let option = element.dataset.bestOption;
     let moveFrame = this.template.querySelector(".selectedProduct");
@@ -253,15 +256,16 @@ get notificationExist(){
     let rightHandsImage = this.template.querySelector(".rightGood");
     let leftHandsImage = this.template.querySelector(".leftGood");
 
-    if (bestOptionBlock) {
-      let bestOption = bestOptionBlock
-        .getBoundingClientRect();
+    if (bestOptionBlock && this.compareProductList.length > 1) {
+      let bestOption = bestOptionBlock.getBoundingClientRect();
 
       if (show) {
-
-        if(scrollTable.getBoundingClientRect().x < scrollTable.scrollWidth){
-          bestOptionBlock.scrollIntoView({ behavior: "smooth",block: "nearest", inline: "center" })
-          
+        if (scrollTable.getBoundingClientRect().x < scrollTable.scrollWidth) {
+          bestOptionBlock.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest",
+            inline: "center"
+          });
         }
 
         moveFrame.style.cssText =
@@ -283,12 +287,14 @@ get notificationExist(){
     }
   }
 
+  // set all "Add to cart" buttons to normal position
   resetButtonsMove() {
     this.template.querySelectorAll(".addToCartCustom").forEach((cartBtn) => {
       cartBtn.style.transform = "translate(0,0)";
     });
   }
 
+  // create interval to calculating mouse move in table
   intervalMouseCheck() {
     // eslint-disable-next-line @lwc/lwc/no-async-operation
     let checkInterval = setInterval(() => {
@@ -323,6 +329,7 @@ get notificationExist(){
     return checkInterval;
   }
 
+  // handler for mousemove event inside main table
   getUserFocus(e) {
     if (!this.checkInterval) {
       this.checkInterval = this.intervalMouseCheck();
@@ -333,6 +340,7 @@ get notificationExist(){
     this.cursorInTable = true;
   }
 
+  // redirecting functionality for Product2 object detail page
   navigateToProduct(e) {
     this[NavigationMixin.Navigate]({
       type: "standard__recordPage",
@@ -344,6 +352,7 @@ get notificationExist(){
     });
   }
 
+  // set last position coordinat to unable
   deactivateTableListening() {
     this.cursorInTable = false;
   }
